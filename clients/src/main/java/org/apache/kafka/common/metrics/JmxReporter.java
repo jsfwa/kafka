@@ -152,22 +152,22 @@ public class JmxReporter implements MetricsReporter {
     }
 
     private void unregister(KafkaMbean mbean) {
-        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-        try {
-            if (server.isRegistered(mbean.name()))
-                server.unregisterMBean(mbean.name());
-        } catch (JMException e) {
-            throw new KafkaException("Error unregistering mbean", e);
-        }
+//        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+//        try {
+//            if (server.isRegistered(mbean.name()))
+//                server.unregisterMBean(mbean.name());
+//        } catch (JMException e) {
+//            throw new KafkaException("Error unregistering mbean", e);
+//        }
     }
 
     private void reregister(KafkaMbean mbean) {
-        unregister(mbean);
-        try {
-            ManagementFactory.getPlatformMBeanServer().registerMBean(mbean, mbean.name());
-        } catch (JMException e) {
-            throw new KafkaException("Error registering mbean " + mbean.name(), e);
-        }
+//        unregister(mbean);
+//        try {
+//            ManagementFactory.getPlatformMBeanServer().registerMBean(mbean, mbean.name());
+//        } catch (JMException e) {
+//            throw new KafkaException("Error registering mbean " + mbean.name(), e);
+//        }
     }
 
     private static class KafkaMbean implements DynamicMBean {
