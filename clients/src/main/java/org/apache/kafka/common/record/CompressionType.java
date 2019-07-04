@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.reflect.Constructor;
 import java.nio.ByteBuffer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -78,7 +79,9 @@ public enum CompressionType {
         @Override
         public OutputStream wrapForOutput(ByteBufferOutputStream buffer, byte messageVersion) {
             try {
-                return (OutputStream) SnappyConstructors.OUTPUT.invoke(buffer);
+                Class<?> outputStreamClass = Class.forName("org.xerial.snappy.SnappyOutputStream");
+                Constructor constructor = outputStreamClass.getConstructor(OutputStream.class);
+                return (OutputStream) constructor.newInstance(buffer);
             } catch (Throwable e) {
                 throw new KafkaException(e);
             }
@@ -87,7 +90,9 @@ public enum CompressionType {
         @Override
         public InputStream wrapForInput(ByteBuffer buffer, byte messageVersion, BufferSupplier decompressionBufferSupplier) {
             try {
-                return (InputStream) SnappyConstructors.INPUT.invoke(new ByteBufferInputStream(buffer));
+                Class<?> inputStreamClass = Class.forName("org.xerial.snappy.SnappyInputStream");
+                Constructor constructor = inputStreamClass.getConstructor(InputStream.class);
+                return (InputStream) constructor.newInstance(new ByteBufferInputStream(buffer));
             } catch (Throwable e) {
                 throw new KafkaException(e);
             }
@@ -119,7 +124,9 @@ public enum CompressionType {
         @Override
         public OutputStream wrapForOutput(ByteBufferOutputStream buffer, byte messageVersion) {
             try {
-                return (OutputStream) ZstdConstructors.OUTPUT.invoke(buffer);
+                Class<?> outputStreamClass = Class.forName("com.github.luben.zstd.ZstdOutputStream");
+                Constructor constructor = outputStreamClass.getConstructor(OutputStream.class);
+                return (OutputStream) constructor.newInstance(buffer);
             } catch (Throwable e) {
                 throw new KafkaException(e);
             }
@@ -128,7 +135,9 @@ public enum CompressionType {
         @Override
         public InputStream wrapForInput(ByteBuffer buffer, byte messageVersion, BufferSupplier decompressionBufferSupplier) {
             try {
-                return (InputStream) ZstdConstructors.INPUT.invoke(new ByteBufferInputStream(buffer));
+                Class<?> inputStreamClass = Class.forName("com.github.luben.zstd.ZstdInputStream");
+                Constructor constructor = inputStreamClass.getConstructor(InputStream.class);
+                return (InputStream) constructor.newInstance(new ByteBufferInputStream(buffer));
             } catch (Throwable e) {
                 throw new KafkaException(e);
             }
