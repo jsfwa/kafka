@@ -61,9 +61,9 @@ public class AppInfoParser {
         try {
             ObjectName name = new ObjectName(prefix + ":type=app-info,id=" + Sanitizer.jmxSanitize(id));
             AppInfo mBean = new AppInfo(nowMs);
-            ManagementFactory.getPlatformMBeanServer().registerMBean(mBean, name);
+//            ManagementFactory.getPlatformMBeanServer().registerMBean(mBean, name);
 
-            registerMetrics(metrics, mBean); // prefix will be added later by JmxReporter
+//            registerMetrics(metrics, mBean); // prefix will be added later by JmxReporter
         } catch (JMException e) {
             log.warn("Error registering AppInfo mbean", e);
         }
