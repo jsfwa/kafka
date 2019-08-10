@@ -45,8 +45,8 @@ public class AppInfoParser {
         } catch (Exception e) {
             log.warn("Error while loading kafka-version.properties: {}", e.getMessage());
         }
-        VERSION = props.getProperty("version", DEFAULT_VALUE).trim();
-        COMMIT_ID = props.getProperty("commitId", DEFAULT_VALUE).trim();
+        VERSION = "2.4.0-graal";
+        COMMIT_ID = "none";
     }
 
     public static String getVersion() {
@@ -58,7 +58,7 @@ public class AppInfoParser {
     }
 
     public static synchronized void registerAppInfo(String prefix, String id, Metrics metrics, long nowMs) {
-        try {
+      /*  try {
             ObjectName name = new ObjectName(prefix + ":type=app-info,id=" + Sanitizer.jmxSanitize(id));
             AppInfo mBean = new AppInfo(nowMs);
 //            ManagementFactory.getPlatformMBeanServer().registerMBean(mBean, name);
@@ -66,11 +66,11 @@ public class AppInfoParser {
 //            registerMetrics(metrics, mBean); // prefix will be added later by JmxReporter
         } catch (JMException e) {
             log.warn("Error registering AppInfo mbean", e);
-        }
+        }*/
     }
 
     public static synchronized void unregisterAppInfo(String prefix, String id, Metrics metrics) {
-        MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+       /* MBeanServer server = ManagementFactory.getPlatformMBeanServer();
         try {
             ObjectName name = new ObjectName(prefix + ":type=app-info,id=" + Sanitizer.jmxSanitize(id));
             if (server.isRegistered(name))
@@ -79,7 +79,7 @@ public class AppInfoParser {
             unregisterMetrics(metrics);
         } catch (JMException e) {
             log.warn("Error unregistering AppInfo mbean", e);
-        }
+        }*/
     }
 
     private static MetricName metricName(Metrics metrics, String name) {
